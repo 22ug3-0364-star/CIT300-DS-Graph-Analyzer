@@ -70,8 +70,8 @@ public class Graph {
     // Remove a connection
     public void removeConnection(String location1, String location2) {
 
-        if (!adjacencyList.containsKey(location1) ||
-            !adjacencyList.containsKey(location2)) {
+        if (!adjacencyList.containsKey(location1)
+                || !adjacencyList.containsKey(location2)) {
 
             System.out.println("One or both locations do not exist.");
             return;
@@ -90,7 +90,7 @@ public class Graph {
         }
     }
 
-    // Display graph connections
+    // Display all graph connections
     public void displayConnections() {
 
         if (adjacencyList.isEmpty()) {
@@ -104,14 +104,19 @@ public class Graph {
 
             System.out.print(location + " -> ");
 
-            List<String> connections = adjacencyList.get(location);
+            List<String> connections =
+                    adjacencyList.get(location);
 
             if (connections.isEmpty()) {
-                System.out.println("No connections");
+
+                System.out.println("No connections.");
+
             } else {
+
                 for (String connection : connections) {
                     System.out.print(connection + " ");
                 }
+
                 System.out.println();
             }
         }
@@ -126,6 +131,7 @@ public class Graph {
         }
 
         Set<String> visited = new HashSet<>();
+
         Queue<String> queue = new LinkedList<>();
 
         visited.add(startLocation);
@@ -139,17 +145,55 @@ public class Graph {
 
             System.out.print(current + " ");
 
-            for (String neighbour : adjacencyList.get(current)) {
+            for (String neighbour :
+                    adjacencyList.get(current)) {
 
                 if (!visited.contains(neighbour)) {
 
                     visited.add(neighbour);
+
                     queue.add(neighbour);
                 }
             }
         }
 
         System.out.println();
+    }
+
+    // Depth First Search
+    public void dfs(String startLocation) {
+
+        if (!adjacencyList.containsKey(startLocation)) {
+            System.out.println(startLocation + " not found.");
+            return;
+        }
+
+        Set<String> visited = new HashSet<>();
+
+        System.out.print("DFS Traversal: ");
+
+        dfsRecursive(startLocation, visited);
+
+        System.out.println();
+    }
+
+    // Recursive method for DFS
+    private void dfsRecursive(
+            String current,
+            Set<String> visited) {
+
+        visited.add(current);
+
+        System.out.print(current + " ");
+
+        for (String neighbour :
+                adjacencyList.get(current)) {
+
+            if (!visited.contains(neighbour)) {
+
+                dfsRecursive(neighbour, visited);
+            }
+        }
     }
 
     // Graph menu
@@ -160,24 +204,28 @@ public class Graph {
         do {
 
             System.out.println("\n========== GRAPH OPERATIONS ==========");
+
             System.out.println("10. Add Campus Location");
             System.out.println("11. Remove Campus Location");
             System.out.println("12. Add Connection / Road");
             System.out.println("13. Remove Connection / Road");
             System.out.println("14. Display Connections");
             System.out.println("15. BFS Traversal");
-            System.out.println("16. Return to Main Menu");
+            System.out.println("16. DFS Traversal");
+            System.out.println("17. Return to Main Menu");
 
             System.out.print("Enter your choice: ");
 
             choice = scanner.nextInt();
+
             scanner.nextLine();
 
             switch (choice) {
 
                 case 10:
 
-                    System.out.print("Enter campus location: ");
+                    System.out.print(
+                            "Enter campus location: ");
 
                     String location =
                             scanner.nextLine();
@@ -188,7 +236,8 @@ public class Graph {
 
                 case 11:
 
-                    System.out.print("Enter location to remove: ");
+                    System.out.print(
+                            "Enter location to remove: ");
 
                     String removeLocation =
                             scanner.nextLine();
@@ -199,33 +248,41 @@ public class Graph {
 
                 case 12:
 
-                    System.out.print("Enter first location: ");
+                    System.out.print(
+                            "Enter first location: ");
 
                     String location1 =
                             scanner.nextLine();
 
-                    System.out.print("Enter second location: ");
+                    System.out.print(
+                            "Enter second location: ");
 
                     String location2 =
                             scanner.nextLine();
 
-                    addConnection(location1, location2);
+                    addConnection(
+                            location1,
+                            location2);
 
                     break;
 
                 case 13:
 
-                    System.out.print("Enter first location: ");
+                    System.out.print(
+                            "Enter first location: ");
 
                     String location3 =
                             scanner.nextLine();
 
-                    System.out.print("Enter second location: ");
+                    System.out.print(
+                            "Enter second location: ");
 
                     String location4 =
                             scanner.nextLine();
 
-                    removeConnection(location3, location4);
+                    removeConnection(
+                            location3,
+                            location4);
 
                     break;
 
@@ -237,7 +294,8 @@ public class Graph {
 
                 case 15:
 
-                    System.out.print("Enter starting location: ");
+                    System.out.print(
+                            "Enter starting location: ");
 
                     String startLocation =
                             scanner.nextLine();
@@ -248,19 +306,29 @@ public class Graph {
 
                 case 16:
 
+                    System.out.print(
+                            "Enter starting location: ");
+
+                    String dfsStartLocation =
+                            scanner.nextLine();
+
+                    dfs(dfsStartLocation);
+
+                    break;
+
+                case 17:
+
                     System.out.println(
-                            "Returning to Main Menu..."
-                    );
+                            "Returning to Main Menu...");
 
                     break;
 
                 default:
 
                     System.out.println(
-                            "Invalid choice."
-                    );
+                            "Invalid choice.");
             }
 
-        } while (choice != 16);
+        } while (choice != 17);
     }
 }
